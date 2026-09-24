@@ -6,7 +6,7 @@ Main-universe DC comics canon is the baseline, current through 2026. Details fro
 adaptations and fan interpretation are included only where they don't contradict that
 canon, and are labelled.
 
-**110 entries in 34 folders, about 39k tokens of lore.** Only two entries (~950 tokens)
+**114 entries in 35 folders, about 41k tokens of lore.** Only three entries (~1,300 tokens)
 are always on. Everything else triggers on names, places and topics.
 
 ## Download
@@ -15,7 +15,7 @@ Import the five files in [`dist/`](dist/):
 
 | File | Contents | Entries |
 |---|---|---|
-| `Harley-Quinn-01-Core-Identity.marinara.json` | Always-on profile and voice guide; names and aliases; roots and Jewish heritage; education and every job; age; love life; appearance; every costume; disguises; personality; psychology; morality; fears; humor; powers; fighting; intellect; the mallet and other weapons; likes, food, dislikes, habits; catchphrases | 26 |
+| `Harley-Quinn-01-Core-Identity.marinara.json` | Always-on profile, voice guide and unfiltered-tone directive; names and aliases; roots and Jewish heritage; education and every job; age; love life; appearance; every costume; disguises; personality; psychology; morality; fears; humor; powers; fighting; intellect; the mallet and other weapons; likes, food, dislikes, habits; catchphrases; "The Ugly Side": her canon body count, the Joker's abuse in full, and her sexuality | 30 |
 | `Harley-Quinn-02-Canon-History.marinara.json` | All four origin versions (Mad Love, No Man's Land, New 52 Ace Chemicals, the modern version), then every era: the Quinntets, Metropolis, Vengeance Unlimited, the Secret Six and Countdown, Gotham City Sirens, the New 52 Suicide Squad, Coney Island, the Gang of Harleys, Joker's Last Laugh, Rebirth (zombies, Vote Harley, Mason's death, Apokolips, her mom's death, Joker War), Heroes in Crisis, Infinite Frontier (Kevin, Keepsake, Verdict), Tini Howard's run, and Throatcutter Hill through the 2026 Ivy breakup; plus a present-day snapshot | 27 |
 | `Harley-Quinn-03-Relationships-Cast.marinara.json` | The Joker (history, plus how she handles him now), Poison Ivy (history, plus dynamics), her mother, father, brothers and extended family, Batman, Catwoman, the Bat-Family, Kevin, Punchline, Gotham's rogues, her own villains, Big Tony, Sy Borgman, Mason, the Coney Island tenants, Red Tool, the Gang of Harleys, Tina and friends, Deadshot, Waller and the Squad, hero team-ups, Althea Klang, Chicken Fingers, Bud & Lou, Bernie the Beaver, her other animals | 29 |
 | `Harley-Quinn-04-Places-Groups-Things.marinara.json` | Her homes over the years, the Coney Island building, Eden, Gotham, Arkham, Ace Chemicals, Throatcutter Hill, New York spots, her Coney Island jobs, Metropolis, the Suicide Squad, the Joker's gang, a team index, Joker Venom, the Scatapult, her possessions | 16 |
@@ -38,8 +38,13 @@ facts. Unlock any entry you want the agent to be able to change.
 
 ## How the books behave
 
-- **Always on:** `Core Profile` (who she is, and the default setting) and `Voice & Speech
-  Guide` (accent, slang, pet names, rhythm, sample lines).
+- **Always on:** `Core Profile` (who she is, and the default setting), `Voice & Speech
+  Guide` (accent, slang, profanity, pet names, rhythm, sample lines), and `Tone Directive:
+  Unfiltered Harley`.
+- **Unfiltered by design:** Harley is portrayed with all her ugliness and beauty. That
+  means graphic violence and her real kill count, the Joker's abuse without softening,
+  frank adult sexuality, free profanity, and no moralizing. To tone any of it down,
+  disable the Tone Directive entry or the "06 · The Ugly Side" folder.
 - **Default era:** present-day canon (2026). Harley is in Gotham's Throatcutter Hill,
   newly broken up with Mayor Poison Ivy, and flirting with Althea Klang. If your chat
   sets another era (Coney Island landlady, Suicide Squad, classic Joker days, or an

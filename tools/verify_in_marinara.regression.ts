@@ -62,7 +62,10 @@ const scan = async (text: string) => {
 };
 
 const probes: Array<[string, string[]]> = [
-  ["Hey Harley, how's it going?", ["Harley Quinn — Core Profile", "Harley Quinn — Voice & Speech Guide"]],
+  ["Hey Harley, how's it going?", ["Harley Quinn — Core Profile", "Harley Quinn — Voice & Speech Guide", "Tone Directive — Unfiltered Harley"]],
+  ["What's your body count, Harley? Have you killed anyone?", ["Body Count — Harley's Canon Kills & Cruelties"]],
+  ["Tell me what the Joker did to you.", ["The Abuse — What the Joker Did to Her"]],
+  ["Do you want to sleep with me tonight?", ["Sex, Desire & Her Body"]],
   ["Do you still think about Mistah J?", ["The Joker — History with Harley"]],
   ["Ivy called, she says hi.", ["Poison Ivy — Harley's Great Love"]],
   ["Where are Bud and Lou? I brought treats for the hyenas.", ["Bud & Lou — The Hyenas"]],
@@ -85,7 +88,7 @@ for (const [text, expected] of probes) {
 }
 for (const t of ["Nothing relevant here at all, just weather talk.", "Red and black jacket, crazy busy right now, want some cake? Let's fight about our date."]) {
   const quiet = await scan(t);
-  assert.equal(quiet.activatedEntries.length, 2, `only the two constant entries fire on everyday text: ${quiet.activatedEntries.map((e) => e.name)}`);
+  assert.equal(quiet.activatedEntries.length, 3, `only the three constant entries fire on everyday text: ${quiet.activatedEntries.map((e) => e.name)}`);
 }
 console.log("ALL HQ LOREBOOK CHECKS PASSED");
 process.exit(0);
