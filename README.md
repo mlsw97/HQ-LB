@@ -1,7 +1,7 @@
-# Harley Quinn Lorebooks for Marinara Engine
+# Harley Quinn for Marinara Engine
 
-Five lorebooks covering Dr. Harleen Frances Quinzel, a.k.a. Harley Quinn, in
-[Marinara Engine](https://github.com/Pasta-Devs/Marinara-Engine)'s native lorebook format.
+A full character card and five lorebooks covering Dr. Harleen Frances Quinzel, a.k.a. Harley Quinn, in
+[Marinara Engine](https://github.com/Pasta-Devs/Marinara-Engine)'s native formats.
 Main-universe DC comics canon is the baseline, current through 2026. Details from
 adaptations and fan interpretation are included only where they don't contradict that
 canon, and are labelled.
@@ -11,7 +11,27 @@ are always on. Everything else triggers on names, places and topics.
 
 ## Download
 
-Import the five files in [`dist/`](dist/):
+Everything is in [`dist/`](dist/).
+
+### The character card: `Harley-Quinn.character.marinara.json`
+
+A Marinara-native card (about 5.2k tokens always in context) that works on its own or with the lorebooks.
+
+| Field | What's in it |
+|---|---|
+| Description | Master profile: identity, current situation, abilities, relationships at a glance, and rules for playing her |
+| Personality | Temperament, the clinical mind underneath, morals, trauma and psychology, love and sex, full speech patterns (Brooklyn, Yiddish, profanity, pet names), likes and dislikes |
+| Backstory | Her whole life in order, from Canarsie childhood to the 2026 Ivy breakup |
+| Appearance | Body, face, skin, hair, voice, smell, current outfit, every classic look, body language |
+| Scenario | Present-day Throatcutter Hill, with the user's role set by the opening message |
+| Greetings | 8: her "destructive agency" office (default); Coney Island landlady (2014); Belle Reve cell neighbor; the classic 1990s Joker hideout; Dr. Quinzel at Arkham before the fall; the rooftop the night Ivy ends it; a "Batquinn" alley rescue; court-ordered therapy with Dr. Quinzel |
+| Example dialogue | 5 exchanges showing her range: playful, traumatized, violent, heartbroken, sexual |
+| System prompt / post-history | Short, unfiltered in-character reinforcement that never speaks for the user |
+| Marinara extras | Pink-to-blue name gradient, pink dialogue color, name aliases (Harleen, Dr. Quinzel, Batquinn…), default tracker fields (Outfit, Weapon in hand, Mood, Hyenas), optional RPG stats (off by default) |
+
+No avatar is included; add your own image after importing.
+
+### The lorebooks
 
 | File | Contents | Entries |
 |---|---|---|
@@ -23,15 +43,24 @@ Import the five files in [`dist/`](dist/):
 
 ## Install
 
+**Character:** import `Harley-Quinn.character.marinara.json` through Marinara's character
+import. It's a native `.marinara.json` card.
+
+**Lorebooks:**
+
 1. In Marinara Engine, open **Import Lorebook (JSON)**. Select or drag in all five
    `.marinara.json` files at once; the dialog accepts several files.
 2. Make them active for your Harley chats. Imported lorebooks are deliberately **not
    global**, so they won't leak into your other characters' chats. Either:
-   - link all five to your Harley Quinn character (the character's Lorebook tab), or
+   - link all five to the imported Harley Quinn character (the character's Lorebook tab), or
    - drag them into a chat's settings to activate them for that chat only.
 3. Recommended: keep the chat's lorebook token budget at **6,000 or more** (the default
    is 8,192). Typical turns use 1–4k tokens. Each book also has its own cap, so no
    single book can crowd out the others.
+
+If you use the card and the lorebooks together, you can disable `Core Profile` and
+`Voice & Speech Guide` in lorebook 01, since the card covers them, and save about 950
+tokens per turn. Keep `Tone Directive: Unfiltered Harley` on.
 
 Every entry arrives **locked**, so Marinara's Lorebook Keeper agent won't rewrite canon
 facts. Unlock any entry you want the agent to be able to change.
@@ -72,12 +101,18 @@ facts. Unlock any entry you want the agent to be able to change.
   folder). It imports all five files through Marinara's real `/api/import/marinara`
   route, checks that every entry, key, folder and piece of content round-trips, then
   runs Marinara's own lorebook scanner on sample messages to confirm the right entries
-  fire and everyday chatter doesn't. It passes against Marinara Engine at commit
-  `12a0acd` (v2.4.6, September 2026).
+  fire and everyday chatter doesn't.
+- `tools/verify_card_in_marinara.regression.ts` does the same for the card (set
+  `HQ_CARD` to the card file). It validates the card against Marinara's character schema,
+  imports it through the same route, checks that every field, greeting and extension
+  round-trips, and confirms that Description, Personality, Backstory, Appearance,
+  Scenario, examples, system prompt and post-history instructions all reach Marinara's
+  prompt builder unchanged.
+- Both pass against Marinara Engine at commit `12a0acd` (v2.4.6, September 2026).
 
 ## Editing
 
-The lore lives in `src/book_*.py`, one file per lorebook, with each entry written as
+The card lives in `src/card_harley.py`. The lore lives in `src/book_*.py`, one file per lorebook, with each entry written as
 `book.entry(name, keys, content, description=…, …)`. `src/lb.py` fills in every
 Marinara field with sensible defaults. Edit, then run `python3 tools/build.py`.
 
