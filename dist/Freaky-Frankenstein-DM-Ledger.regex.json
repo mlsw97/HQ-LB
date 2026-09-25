@@ -1,0 +1,38 @@
+[
+  {
+    "name": "FF DM · Hide ledger",
+    "enabled": true,
+    "findRegex": "\\n*<ledger>[\\s\\S]*?(?:<\\/ledger>|$)",
+    "replaceString": "",
+    "trimStrings": [],
+    "placement": [
+      "ai_output"
+    ],
+    "flags": "gi",
+    "promptOnly": false,
+    "applyMode": "display",
+    "targetCharacterIds": [],
+    "targetPromptPresetIds": [],
+    "order": 0,
+    "minDepth": null,
+    "maxDepth": null
+  },
+  {
+    "name": "FF DM · Strip old ledgers from prompt",
+    "enabled": true,
+    "findRegex": "\\n*<ledger>[\\s\\S]*?(?:<\\/ledger>|$)",
+    "replaceString": "",
+    "trimStrings": [],
+    "placement": [
+      "ai_output"
+    ],
+    "flags": "gi",
+    "promptOnly": true,
+    "applyMode": "prompt",
+    "targetCharacterIds": [],
+    "targetPromptPresetIds": [],
+    "order": 1,
+    "minDepth": 4,
+    "maxDepth": null
+  }
+]

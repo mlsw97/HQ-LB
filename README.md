@@ -41,6 +41,66 @@ No avatar is included; add your own image after importing.
 | `Harley-Quinn-04-Places-Groups-Things.marinara.json` | Her homes over the years, the Coney Island building, Eden, Gotham, Arkham, Ace Chemicals, Throatcutter Hill, New York spots, her Coney Island jobs, Metropolis, the Suicide Squad, the Joker's gang, a team index, Joker Venom, the Scatapult, her possessions | 16 |
 | `Harley-Quinn-05-Adaptations-Alternate-Versions.marinara.json` | Rules for mixing canon with adaptations; the animated universe, the 2019 animated series, other cartoons; the Margot Robbie films and other live action; the Arkham games, Injustice and other games; White Knight, Harleen, Breaking Glass, Criminal Sanity, Old Lady Harley, Absolute and more | 12 |
 
+### The DM prompt: `Freaky-Frankenstein-5.4-DM-Edition.preset.marinara.json`
+
+A Conversation-mode (DM) prompt built from the Freaky Frankenstein 5.4 (Agent Gating)
+preset by Dbtgreg. The preset file is the original, with Roleplay mode left exactly as it
+was and the **Conversation Prompt** filled in, so one preset runs both modes. The same
+prompt is also in `Freaky-Frankenstein-DM-Prompt.txt` if you want to paste it into another
+preset or a chat's custom system prompt.
+
+Every FF 5.4 system was translated into texting instead of dropped:
+
+| FF 5.4 (Roleplay) | DM Edition |
+|---|---|
+| System state, OOC priority, pacing | Same, framed as a real person on a phone; OOC still has top priority |
+| Physics & perception (line of sight, walls) | Phone physics: they only get text, photos and gaps; tone gets misread; no narrating touch |
+| Time & Place header | Silent time awareness from timestamps: gaps, 3 a.m. vs lunch break; timestamps are never written |
+| Prose style (Story / Cinema), POV | Register (STORY / CINEMA) plus craft bans (no tricolons, drama formulas, AI flourishes); always first person, no narration or asterisks |
+| Output length | TERSE / NATURAL / CHATTY message bursts |
+| Anti-parrot / Embellish | ANTIPARROT / PLAYALONG ("continue" makes them keep texting) |
+| NPC Voice 1.0 / 2.0 / Large | Texting fingerprint: caps, punctuation, emoji palette, slang, emotion shown through typing |
+| Anti-Omniscient NPCs | They know only what a phone can tell them; no mind-reading; misreads allowed |
+| Instincts + VAD | Same nine instincts and VAD axes, mapped to texting (double-texts, "nvm", cold periods) |
+| Realistic NPCs, banned words, NPC Genesis, onomatopoeia | Kept, adapted to texting |
+| Realism / Freaky NSFW | REALISM / FREAKY sexting modes, persona-locked, same word rules |
+| World Sim, Agenda, Bonds, Chekhov's Gun, DnD sim, Thoughts, GM Notebook | LIFE (d20 life events), AGENDA, BONDS (same -5..+20 engine, texting tiers), CHEKHOV (same seeds and thresholds), DICE, THOUGHTS, NOTEBOOK |
+| Internal States HTML block | Optional hidden `<ledger>` (LEDGER mode) plus a companion regex file |
+| Debug Engine, Enhance Definitions | Kept as OOC commands and ENHANCE |
+| MICRO / BOLT / MAX chain of thought | Same three, rewritten for texting; never drafts in reasoning, never leaks into the reply |
+| Autonomous messages (new) | When the character texts first, they need a real reason, matched to the gap and bond |
+
+Not ported: the jailbreak pieces (Icebreaker, the fake "professional writer" pretext, the
+post-history bypass and the Kimi prefill), plus things with no DM equivalent (colored
+dialogue, HTML pop-ins, the X feed, inventory, and image-gen tags). Adult and dark content
+is still allowed openly: both parties are adults, and violence, sex and cruelty are written
+without softening or lectures.
+
+**Settings.** Marinara doesn't apply preset variables in Conversation mode, so the toggles
+sit at the top of the Conversation Prompt as `{{setvar::…}}` lines. Open the preset,
+edit the value after the second `::`, and the change takes effect on the next message:
+
+| Setting | Values (default first) |
+|---|---|
+| `ff_texting` | NATURAL, TERSE, CHATTY |
+| `ff_prose` | CINEMA, STORY |
+| `ff_nsfw` | REALISM, NONE, FREAKY |
+| `ff_echo` | ANTIPARROT, PLAYALONG |
+| `ff_toggles` | VOICE ANTIOMNI VAD REALNPC BANNED GENESIS (optional: ONOMATO) |
+| `ff_modules` | LIFE AGENDA BONDS CHEKHOV (optional: THOUGHTS DICE NOTEBOOK) |
+| `ff_state` | SILENT, LEDGER |
+| `ff_cot` | BOLT, MICRO, MAX, NONE (use NONE or MICRO on non-thinking models) |
+| `ff_extras` | empty (optional: MEDIA DEBUG ENHANCE) |
+
+**LEDGER mode.** The character appends a hidden `<ledger>` with their activity, VAD, bonds,
+Chekhov bullets, dice and thoughts to every reply, just like FF's Internal States. Before
+turning it on, import `Freaky-Frankenstein-DM-Ledger.regex.json` under **Presets → Regexes →
+Import**. One script hides the ledger on screen, including while it streams; the other
+strips old ledgers from the prompt so only the newest ones are sent. Marinara doesn't
+import regex scripts bundled in a preset file, so this has to be a separate import.
+
+With default settings the prompt adds about 7k tokens; the full MAX setup adds more.
+
 ## Install
 
 **Character:** import `Harley-Quinn.character.marinara.json` through Marinara's character
@@ -108,13 +168,20 @@ facts. Unlock any entry you want the agent to be able to change.
   round-trips, and confirms that Description, Personality, Backstory, Appearance,
   Scenario, examples, system prompt and post-history instructions all reach Marinara's
   prompt builder unchanged.
-- Both pass against Marinara Engine at commit `12a0acd` (v2.4.6, September 2026).
+- `tools/verify_dm_prompt_in_marinara.regression.ts` imports the DM preset and the card, opens
+  a real Conversation-mode chat, and runs Marinara's actual `/api/generate` route against a
+  local fake model to capture the exact prompt. It checks default, autonomous, all-on and
+  all-off settings (every block appears or disappears as it should, and no macros or settings
+  leak), and it checks the ledger regex through Marinara's import schema, its safety check and
+  a real generation.
+- All three pass against Marinara Engine at commit `12a0acd` (v2.4.6, September 2026).
 
 ## Editing
 
 The card lives in `src/card_harley.py`. The lore lives in `src/book_*.py`, one file per lorebook, with each entry written as
 `book.entry(name, keys, content, description=…, …)`. `src/lb.py` fills in every
-Marinara field with sensible defaults. Edit, then run `python3 tools/build.py`.
+Marinara field with sensible defaults. The DM prompt is `src/convo/freaky_frankenstein_dm.txt`, packaged by
+`src/convo_preset.py`. Edit, then run `python3 tools/build.py`.
 
 ## Sources
 

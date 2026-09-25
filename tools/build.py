@@ -79,6 +79,20 @@ def main():
                      data["extensions"]["backstory"], data["extensions"]["appearance"]]
     print(f"{card_path.name}: ~{sum(approx_tokens(f) for f in prompt_fields)} tokens always in context, "
           f"{1 + len(data['alternate_greetings'])} greetings")
+
+    convo = importlib.import_module("convo_preset")
+    preset_env = convo.preset()
+    if preset_env["type"] != "marinara_preset" or not preset_env["data"]["preset"]["conversationPrompt"].strip():
+        all_problems.append("DM preset is missing its conversation prompt")
+    prompt = convo.PROMPT
+    if prompt.count("{{#if") != prompt.count("{{/if}}"):
+        all_problems.append("DM prompt has unbalanced {{#if}} blocks")
+    preset_path = out_dir / "Freaky-Frankenstein-5.4-DM-Edition.preset.marinara.json"
+    preset_path.write_text(json.dumps(preset_env, indent=2, ensure_ascii=False) + "\n", encoding="utf-8")
+    (out_dir / "Freaky-Frankenstein-DM-Prompt.txt").write_text(prompt, encoding="utf-8")
+    (out_dir / "Freaky-Frankenstein-DM-Ledger.regex.json").write_text(
+        json.dumps(convo.regex_scripts(), indent=2, ensure_ascii=False) + "\n", encoding="utf-8")
+    print(f"{preset_path.name}: conversation prompt ~{approx_tokens(prompt)} tokens before toggles are applied")
     if all_problems:
         print("\nPROBLEMS:")
         for p in all_problems:

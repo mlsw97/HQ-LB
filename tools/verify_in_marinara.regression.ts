@@ -23,7 +23,7 @@ app.decorate("db", db);
 await app.register(importRoutes, { prefix: "/api/import" });
 const storage = createLorebooksStorage(db);
 
-const files = readdirSync(DIST).filter((f) => f.endsWith(".marinara.json") && !f.includes(".character.")).sort();
+const files = readdirSync(DIST).filter((f) => f.endsWith(".marinara.json") && !f.includes(".character.") && !f.includes(".preset.")).sort();
 assert.equal(files.length, 5, "five lorebook files");
 const ids: string[] = [];
 for (const f of files) {
