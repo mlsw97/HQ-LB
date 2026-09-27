@@ -101,6 +101,41 @@ import regex scripts bundled in a preset file, so this has to be a separate impo
 
 With default settings the prompt adds about 7k tokens; the full MAX setup adds more.
 
+### Tavo versions: `dist/tavo/`
+
+The same card and lorebooks, converted for [Tavo](https://docs.tavoai.dev/en/). Per Tavo's docs
+(the TavoJS reference for `tavo.character.import` and `tavo.lorebook.import`), Tavo imports
+Character Card V3 JSON and standalone `lorebook_v3` JSON, and a card's embedded `character_book`
+becomes a Tavo lorebook automatically.
+
+| File | What it is |
+|---|---|
+| `Harley-Quinn.tavo.card.json` | The character card (CCv3), without lore |
+| `Harley-Quinn-with-all-lorebooks.tavo.card.json` | The same card with all 114 lore entries embedded; one import gives you the character plus a "Complete Lore" lorebook |
+| `Harley-Quinn-01…05-*.tavo.lorebook.json` | The five lorebooks as separate `lorebook_v3` files, if you'd rather keep them split |
+
+Use either the card with lore embedded, or the plain card plus the five lorebook files. Don't
+import both, or every entry will exist twice.
+
+Differences from the Marinara versions:
+
+- **Description:** Tavo has no Appearance or Backstory fields, so both are appended to the Description.
+- **Creator Notes:** the Summary now leads the Creator Notes, which are rewritten for Tavo.
+- **Dropped:** Marinara-only extras (name colors, tracker fields and RPG stats).
+- **Unchanged:** all 8 greetings, the example dialogue, the system prompt and the post-history instructions.
+- **Entry settings:** each entry keeps its keywords, whole-word matching, sticky duration and scan depth, stored in CCv3, SillyTavern and Tavo-native field names so Tavo can read them under any of those formats.
+- **Avatar:** none is included; add your own in Tavo.
+
+To import in Tavo:
+
+1. Save the JSON files to your phone. On iOS, use "Save to Files".
+2. Import the card: open the menu, tap **Character**, then **Create**, then **Import from File**, pick the
+   JSON file, and tap **Save**.
+3. If you use the separate lorebooks, import them in Tavo's World Book (Lore Book) section. Tavo's
+   docs don't describe those import steps; its import function takes `lorebook_v3` JSON.
+4. In a chat, open the right-side panel and use **Advanced Options → World Book** to turn the
+   lorebooks on.
+
 ## Install
 
 **Character:** import `Harley-Quinn.character.marinara.json` through Marinara's character
@@ -174,7 +209,12 @@ facts. Unlock any entry you want the agent to be able to change.
   all-off settings (every block appears or disappears as it should, and no macros or settings
   leak), and it checks the ledger regex through Marinara's import schema, its safety check and
   a real generation.
-- All three pass against Marinara Engine at commit `12a0acd` (v2.4.6, September 2026).
+- `tools/verify_tavo_files.regression.ts` checks the Tavo files with an independent Character Card
+  V3 / SillyTavern reader (Marinara's SillyTavern importers), since Tavo itself is a closed mobile app.
+  It confirms that every card field, greeting and lore entry (content, keys, constant, whole words,
+  sticky) comes through, including the embedded `character_book`. `tools/tavo.py` also validates the
+  CCv3 structure during the build.
+- All four pass against Marinara Engine at commit `12a0acd` (v2.4.6, September 2026).
 
 ## Editing
 

@@ -92,6 +92,9 @@ def main():
     (out_dir / "Freaky-Frankenstein-DM-Prompt.txt").write_text(prompt, encoding="utf-8")
     (out_dir / "Freaky-Frankenstein-DM-Ledger.regex.json").write_text(
         json.dumps(convo.regex_scripts(), indent=2, ensure_ascii=False) + "\n", encoding="utf-8")
+    sys.path.insert(0, str(ROOT / "tools"))
+    import tavo
+    all_problems += tavo.build(out_dir / "tavo", [importlib.import_module(m).book for m in BOOK_MODULES], env)
     print(f"{preset_path.name}: conversation prompt ~{approx_tokens(prompt)} tokens before toggles are applied")
     if all_problems:
         print("\nPROBLEMS:")
